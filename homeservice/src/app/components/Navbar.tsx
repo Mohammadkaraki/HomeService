@@ -365,6 +365,18 @@ const Navbar = () => {
             <span className="text-white">Services</span>
           </h1>
         </Link>
+        {/* Mobile menu button */}
+        <div className="md:hidden ml-auto">
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)} 
+            className="text-white focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
         
         {/* Search bar */}
         <div className="hidden md:flex items-center justify-center flex-grow mx-4" ref={searchRef}>
@@ -442,9 +454,6 @@ const Navbar = () => {
                   <span className="text-sm">{user?.fullName?.charAt(0) || 'U'}</span>
                 </div>
                 <span>{user?.fullName || 'User'}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
               </button>
               
               {/* User dropdown menu */}
@@ -534,18 +543,6 @@ const Navbar = () => {
               </Link>
             </>
           )}
-        
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)} 
-              className="text-white focus:outline-none"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -584,9 +581,6 @@ const Navbar = () => {
                     className="text-white hover:text-emerald-200 whitespace-nowrap"
                   >
                     {category.name}
-                    {category.subcategories && category.subcategories.length > 0 && (
-                      <span className="ml-1">▼</span>
-                    )}
                   </Link>
                   
                   {/* Dropdown */}
@@ -611,7 +605,7 @@ const Navbar = () => {
 
               {/* "More" dropdown for overflow categories */}
               {moreCategories.length > 0 && (
-                <li className="group relative px-3 py-2" ref={moreMenuRef}>
+                <li className="relative px-3 py-2" ref={moreMenuRef}>
                   <button
                     className="text-white hover:text-emerald-200 whitespace-nowrap flex items-center"
                     onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
@@ -630,9 +624,6 @@ const Navbar = () => {
                     }}
                   >
                     More
-                    <svg className="h-5 w-5 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
                   </button>
                   
                   {/* More dropdown menu */}
@@ -657,23 +648,22 @@ const Navbar = () => {
                     <ul className="py-2">
                       {moreCategories.map((category) => (
                         <li key={category._id} className="group relative hover:bg-emerald-100">
-                          <div className="flex justify-between px-4 py-2 text-gray-800">
-                            <Link href={`/services?category=${category._id}`} className="block w-full">
-                              {category.name}
-                            </Link>
-                            
+                          <div className="flex items-center px-4 py-2 text-gray-800">
                             {category.subcategories && category.subcategories.length > 0 && (
-                              <div className="ml-2">
+                              <div className="mr-2">
                                 <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                                 </svg>
                               </div>
                             )}
+                            <Link href={`/services?category=${category._id}`} className="block w-full">
+                              {category.name}
+                            </Link>
                           </div>
                           
                           {/* Nested subcategories dropdown */}
                           {category.subcategories && category.subcategories.length > 0 && (
-                            <div className="absolute left-full top-0 w-64 bg-white rounded shadow-lg invisible group-hover:visible transition-opacity duration-300 opacity-0 group-hover:opacity-100 -mt-2">
+                            <div className="absolute right-full top-0 w-64 bg-white rounded shadow-lg invisible group-hover:visible group-hover:opacity-100 opacity-0 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 -mt-2">
                               <ul className="py-2">
                                 {category.subcategories.map((subcategory) => (
                                   <li key={subcategory._id} className="hover:bg-emerald-100">
@@ -783,9 +773,6 @@ const Navbar = () => {
                   <details className="group">
                     <summary className="flex justify-between items-center px-3 py-2 text-white cursor-pointer list-none">
                       {category.name}
-                      <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
                     </summary>
                     {category.subcategories && category.subcategories.length > 0 && (
                       <div className="pl-4 pr-2">
