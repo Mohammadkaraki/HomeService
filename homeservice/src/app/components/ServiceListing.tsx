@@ -238,11 +238,19 @@ const ServiceListing: React.FC<ServiceListingProps> = ({ provider }) => {
         <div className="md:w-1/4 p-4 flex flex-col items-center bg-gray-50">
           <div className="relative w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-emerald-100 shadow-md">
             <Image 
-              src={provider.profileImage ? `/uploads/providers/${provider.profileImage}` : '/images/default-provider.jpg'} 
+              src={provider.profileImage && provider.profileImage.startsWith('http') 
+                ? provider.profileImage
+                : (provider.profileImage && provider.profileImage !== 'default-provider.jpg' 
+                    ? `/uploads/providers/${provider.profileImage}`
+                    : '/images/default-provider.jpg')} 
               alt={provider.fullName} 
               layout="fill" 
               objectFit="cover" 
               className="rounded-full"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = '/images/default-provider.jpg';
+              }}
             />
           </div>
           <div className="w-full flex flex-col justify-between">

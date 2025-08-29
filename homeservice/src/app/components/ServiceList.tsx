@@ -121,11 +121,14 @@ const ServiceList: React.FC<ServiceListProps> = ({ categoryId, subcategoryId }) 
                   <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center overflow-hidden mr-2">
                     {service.provider.profileImage ? (
                       <Image 
-                        src={service.provider.profileImage} 
+                        src={service.provider.profileImage.startsWith('http') 
+                          ? service.provider.profileImage
+                          : `/uploads/providers/${service.provider.profileImage}`} 
                         alt={service.provider.fullName}
                         width={40}
                         height={40}
                         className="object-cover"
+
                       />
                     ) : (
                       <span className="text-emerald-700 font-semibold">

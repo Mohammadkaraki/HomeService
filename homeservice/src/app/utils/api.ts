@@ -265,8 +265,18 @@ export const reviews = {
 
 // Services endpoints
 export const services = {
-  getAll: () => 
-    axiosInstance.get('/services'),
+  getAll: (query?: any) => {
+    const params = new URLSearchParams();
+    if (query) {
+      Object.keys(query).forEach(key => {
+        if (query[key]) {
+          params.append(key, query[key]);
+        }
+      });
+    }
+    const url = params.toString() ? `/services?${params.toString()}` : '/services';
+    return axiosInstance.get(url);
+  },
   getById: (id: string) => 
     axiosInstance.get(`/services/${id}`),
   getByProviderId: (providerId: string) => 

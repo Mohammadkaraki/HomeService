@@ -426,21 +426,25 @@ const HomePage: React.FC = () => {
                                     </div>
                                     <div className="h-32 sm:h-40 relative">
                                         <div className="w-full h-full bg-gray-200 relative overflow-hidden">
-                                            {/* Use next/image with fallback */}
-                                            <Image
-                                                src={category.image && category.image !== 'default-category.jpg' 
-                                                    ? `/categories/${category.image}`
-                                                    : '/next.svg'}
-                                                alt={category.name}
-                                                fill
-                                                sizes="(max-width: 640px) 50vw, 25vw"
-                                                style={{ objectFit: 'cover' }}
-                                                onError={(e) => {
-                                                    // Handle image error by showing a placeholder
-                                                    const target = e.target as HTMLImageElement;
-                                                    target.src = '/next.svg'; // Use a fallback image from public directory
-                                                }}
-                                            />
+                                            {/* Use next/image with external URL support */}
+                                            {(() => {
+                                                const isHttp = typeof category.image === 'string' && category.image.startsWith('http');
+                                                const isDefault = category.image === 'default-category.jpg' || !category.image;
+                                                const src = isDefault
+                                                    ? '/next.svg'
+                                                    : isHttp
+                                                        ? category.image
+                                                        : `${imageBaseUrl}/categories/${category.image}`;
+                                                return (
+                                                    <Image
+                                                        src={src}
+                                                        alt={category.name}
+                                                        fill
+                                                        sizes="(max-width: 640px) 50vw, 25vw"
+                                                        style={{ objectFit: 'cover' }}
+                                                    />
+                                                );
+                                            })()}
                                         </div>
                                     </div>
                                 </Link>

@@ -146,11 +146,22 @@ const ServiceDetailPage = () => {
                       <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center overflow-hidden mr-3">
                         {service.provider.profileImage ? (
                           <Image 
-                            src={service.provider.profileImage} 
+                            src={service.provider.profileImage.startsWith('http') 
+                              ? service.provider.profileImage
+                              : `/uploads/providers/${service.provider.profileImage}`} 
                             alt={service.provider.fullName}
                             width={48}
                             height={48}
                             className="object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              // Show fallback initial
+                              const parent = target.parentElement;
+                              if (parent) {
+                                parent.innerHTML = `<span class="text-emerald-700 font-semibold text-lg">${service.provider.fullName.charAt(0)}</span>`;
+                              }
+                            }}
                           />
                         ) : (
                           <span className="text-emerald-700 font-semibold text-lg">

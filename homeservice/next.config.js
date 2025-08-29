@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'images.unsplash.com', 'picsum.photos'],
     // Add unoptimized option for local images
     unoptimized: process.env.NODE_ENV === 'development',
   },
